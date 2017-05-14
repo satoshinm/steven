@@ -547,6 +547,7 @@ impl Shader {
         ret
     }
 
+#[cfg(target_os = "emscripten")]
     pub fn get_info_log(&self) -> String {
         let len = self.get_parameter(INFO_LOG_LENGTH);
 
@@ -557,6 +558,19 @@ impl Shader {
         }
         String::from_utf8(data).unwrap()
     }
+
+#[cfg(not(target_os = "emscripten"))]
+    pub fn get_info_log(&self) -> String {
+        let len = self.get_parameter(INFO_LOG_LENGTH);
+
+        let mut data = Vec::<u8>::with_capacity(len as usize);
+        unsafe {
+            data.set_len(len as usize);
+            gl::GetShaderInfoLog(self.0, len, ptr::null_mut(), data.as_mut_ptr() as *mut i8);
+        }
+        String::from_utf8(data).unwrap()
+    }
+
 }
 
 #[derive(Clone, Copy)]
