@@ -103,8 +103,8 @@ macro_rules! handle_packet {
 impl Server {
 
     pub fn connect(resources: Arc<RwLock<resources::Manager>>, profile: mojang::Profile, address: &str) -> Result<Server, protocol::Error> {
-        use openssl::crypto::pkey;
-        use openssl::crypto::rand::rand_bytes;
+        //use openssl::crypto::pkey;
+        //use openssl::crypto::rand::rand_bytes;
         let mut conn = try!(protocol::Conn::new(address));
 
         let host = conn.host.clone();
@@ -145,6 +145,7 @@ impl Server {
             };
         }
 
+/* TODO
         let mut key = pkey::PKey::new();
         key.load_pub(&packet.public_key.data);
         let shared = rand_bytes(16);
@@ -158,12 +159,13 @@ impl Server {
             shared_secret: protocol::LenPrefixedBytes::new(shared_e),
             verify_token: protocol::LenPrefixedBytes::new(token_e),
         }));
+        */
 
         let mut read = conn.clone();
         let mut write = conn.clone();
 
-        read.enable_encyption(&shared, true);
-        write.enable_encyption(&shared, false);
+        //read.enable_encyption(&shared, true);
+        //write.enable_encyption(&shared, false);
 
         let username;
         let uuid;
