@@ -14,7 +14,7 @@
 
 #![allow(dead_code)]
 
-use openssl::crypto::symm;
+//use openssl::crypto::symm;
 use serde_json;
 use hyper;
 
@@ -742,7 +742,9 @@ pub struct Conn {
     direction: Direction,
     pub state: State,
 
+/* TODO
     cipher: Option<symm::Crypter>,
+    */
 
     compression_threshold: i32,
     compression_read: Option<ZlibDecoder<io::Cursor<Vec<u8>>>>,
@@ -769,7 +771,7 @@ impl Conn {
             port: parts[1].parse().unwrap(),
             direction: Direction::Serverbound,
             state: State::Handshaking,
-            cipher: Option::None,
+            //TODO cipher: Option::None,
             compression_threshold: -1,
             compression_read: Option::None,
             compression_write: Option::None,
@@ -857,9 +859,11 @@ impl Conn {
     }
 
     pub fn enable_encyption(&mut self, key: &[u8], decrypt: bool) {
+    /* TODO
         let cipher = symm::Crypter::new(symm::Type::AES_128_CFB8);
         cipher.init(if decrypt { symm::Mode::Decrypt } else { symm::Mode::Encrypt }, key, key);
         self.cipher = Option::Some(cipher);
+        */
     }
 
     pub fn set_compresssion(&mut self, threshold: i32) {
@@ -963,6 +967,7 @@ pub struct StatusPlayer {
 
 impl Read for Conn {
     fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
+    /* TODO
         match self.cipher.as_mut() {
             Option::None => self.stream.read(buf),
             Option::Some(cipher) => {
@@ -974,11 +979,14 @@ impl Read for Conn {
                 Ok(ret)
             }
         }
+        */
+        Ok(0)
     }
 }
 
 impl Write for Conn {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
+    /*
         match self.cipher.as_mut() {
             Option::None => self.stream.write(buf),
             Option::Some(cipher) => {
@@ -987,6 +995,8 @@ impl Write for Conn {
                 Ok(buf.len())
             }
         }
+        */
+        Ok(0)
     }
 
     fn flush(&mut self) -> io::Result<()> {
@@ -1002,7 +1012,7 @@ impl Clone for Conn {
             port: self.port,
             direction: self.direction,
             state: self.state,
-            cipher: Option::None,
+            //TODO cipher: Option::None,
             compression_threshold: self.compression_threshold,
             compression_read: Option::None,
             compression_write: Option::None,

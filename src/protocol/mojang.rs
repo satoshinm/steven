@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use openssl::crypto::hash;
+//use openssl::crypto::hash;
 use serde_json;
 use serde_json::builder::ObjectBuilder;
 use hyper;
@@ -102,6 +102,7 @@ impl Profile {
 
     pub fn join_server(&self, server_id: &str, shared_key: &[u8], public_key: &[u8]) -> Result<(), super::Error> {
         use std::io::Write;
+        /* TODO
         let mut sha1 = hash::Hasher::new(hash::Type::SHA1);
         sha1.write_all(server_id.as_bytes()).unwrap();
         sha1.write_all(shared_key).unwrap();
@@ -136,10 +137,13 @@ impl Profile {
                         .send());
 
         if res.status == hyper::status::StatusCode::NoContent {
+        */
             Ok(())
+            /*
         } else {
             Err(super::Error::Err("Failed to auth with server".to_owned()))
         }
+        */
     }
 
     pub fn is_complete(&self) -> bool {
